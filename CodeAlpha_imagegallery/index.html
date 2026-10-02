@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f9f9f9; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; padding: 20px; }
+        .gallery img { width: 300px; height: 200px; object-fit: cover; cursor: pointer; transition: transform 0.3s ease, filter 0.3s ease; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .gallery img:hover { transform: scale(1.05); filter: brightness(0.7); }
+        
+        /* Lightbox Styles */
+        .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; flex-direction: column; z-index: 1000;}
+        .lightbox img { max-width: 90%; max-height: 80%; border-radius: 8px; }
+        .close-btn, .nav-btn { color: white; font-size: 40px; cursor: pointer; position: absolute; background: none; border: none; user-select: none; }
+        .close-btn { top: 20px; right: 40px; }
+        .prev-btn { left: 40px; top: 50%; transform: translateY(-50%); }
+        .next-btn { right: 40px; top: 50%; transform: translateY(-50%); }
+    </style>
+</head>
+<body>
+    <h1>My Image Gallery</h1>
+    <div class="gallery" id="gallery">
+        <!-- Using placeholder images for demonstration -->
+        <img src="https://picsum.photos/id/1015/600/400" alt="Landscape 1" onclick="openLightbox(0)">
+        <img src="https://picsum.photos/id/1016/600/400" alt="Landscape 2" onclick="openLightbox(1)">
+        <img src="https://picsum.photos/id/1018/600/400" alt="Landscape 3" onclick="openLightbox(2)">
+        <img src="https://picsum.photos/id/1021/600/400" alt="Landscape 4" onclick="openLightbox(3)">
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <button class="close-btn" onclick="closeLightbox()">&times;</button>
+        <button class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</button>
+        <img id="lightbox-img" src="">
+        <button class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</button>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.gallery img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            lightboxImg.src = images[index].src;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+        }
+
+        function changeImage(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            if (currentIndex >= images.length) currentIndex = 0;
+            lightboxImg.src = images[currentIndex].src;
+        }
+    </script>
+</body>
+</html>
